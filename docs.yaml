@@ -1,0 +1,172 @@
+title: To-Do List API Documentation
+description: API documentation for the To-Do List app.
+base_url: http://localhost:3000
+authentication: none
+endpoints:
+  - name: Get Welcome Message
+    description: Retrieve the welcome message for the To-Do List app.
+    url: /
+    method: GET
+    responses:
+      "200":
+        description: OK
+        content:
+          text/plain:
+            example: Welcome to the To-do list app
+
+  - name: Get Tasks
+    description: Retrieve all tasks or filtered tasks.
+    url: /tasks
+    method: GET
+    parameters:
+      - name: page
+        in: query
+        description: Page number for paginated results (optional).
+        type: integer
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            example:
+              message: Tasks fetched successfully
+              result:
+                - id: <task_id>
+                  title: <task_title>
+                  task: <task_description>
+                - id: <task_id>
+                  title: <task_title>
+                  task: <task_description>
+              # Additional tasks...
+      "204":
+        description: No Content
+        content:
+          application/json:
+            example:
+              message: No tasks found
+
+  - name: Get Task by ID
+    description: Retrieve a task by its ID.
+    url: /tasks/{id}
+    method: GET
+    parameters:
+      - name: id
+        in: path
+        description: ID of the task.
+        type: string
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            example:
+              message: Task fetched successfully
+              result:
+                id: <task_id>
+                title: <task_title>
+                task: <task_description>
+      "404":
+        description: Not Found
+        content:
+          application/json:
+            example:
+              message: Task not found
+
+  - name: Create Task
+    description: Create a new task.
+    url: /tasks
+    method: POST
+    requestBody:
+      content:
+        application/json:
+          example:
+            title: <task_title>
+            task: <task_description>
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            example:
+              message: Task added successfully
+              result:
+                id: <task_id>
+                title: <task_title>
+                task: <task_description>
+      "400":
+        description: Bad Request
+        content:
+          application/json:
+            example:
+              error: Invalid input
+
+  - name: Update Task by ID
+    description: Update a task by its ID.
+    url: /tasks/{id}
+    method: PUT
+    parameters:
+      - name: id
+        in: path
+        description: ID of the task.
+        type: string
+    requestBody:
+      content:
+        application/json:
+          example:
+            title: <updated_task_title>
+            task: <updated_task_description>
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            example:
+              message: Task updated successfully
+              result:
+                - id: <task_id>
+                  title: <updated_task_title>
+                  task: <updated_task_description>
+      "404":
+        description: Not Found
+        content:
+          application/json:
+            example:
+              error: Task not found
+
+  - name: Delete Task by ID
+    description: Delete a task by its ID.
+    url: /tasks/{id}
+    method: DELETE
+    parameters:
+      - name: id
+        in: path
+        description: ID of the task.
+        type: string
+    responses:
+      "200":
+        description: OK
+        content:
+          application/json:
+            example:
+              message: Task deleted successfully
+              result:
+                - id: <task_id>
+                  title: <task_title>
+                  task: <task_description>
+      "404":
+        description: Not Found
+        content:
+          application/json:
+            example:
+              error: Task not found
+
+  - name: Page Not Found
+    description: Handle requests for non-existing routes.
+    url: "/*"
+    method: GET
+    responses:
+      "404":
+        description: Not Found
+        content:
+          text/plain:
+            example: This page does not exist
